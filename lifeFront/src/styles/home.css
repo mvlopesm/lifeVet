@@ -1,0 +1,20 @@
+.icon-size {
+  height: 30px;
+  width: 20px;
+}
+
+.btn-space {
+  margin-right: 15px;
+}
+
+.btn-color {
+  background: #388cc8;
+  color: #fff;
+  font-weight: 600;
+}
+
+@media (max-width: 550px) {
+  #displaySearch {
+    display: none;
+  }
+}
