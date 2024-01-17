@@ -13,6 +13,30 @@
   font-weight: 600;
 }
 
+.btn-color {
+  background: #046890;
+  color: #fff;
+  font-weight: 600;
+}
+
+.home-title {
+  color: #046890;
+}
+
+.home-subtitle:hover {
+  color: #046890;
+}
+
+.container {
+  margin-top: -20px;
+}
+
+.form-control {
+  background-color: #8af5eb;
+  border-color: #046890;
+  border-width: 2px;
+}
+
 @media (max-width: 550px) {
   #displaySearch {
     display: none;

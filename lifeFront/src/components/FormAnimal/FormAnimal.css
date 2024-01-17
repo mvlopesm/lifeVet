@@ -1,0 +1,156 @@
+/* Style Form*/
+#alignForm {
+  margin-top: -40px;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  margin: 50px;
+  max-width: 500px;
+  height: 50vh;
+  margin: 7vh auto;
+}
+
+.form p {
+  font-size: 15px;
+  margin-left: 15px;
+  color: gray;
+  font-weight: 500;
+}
+
+.form h2 {
+  color: #388cc8;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.form-animal {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-animal p {
+  margin-bottom: 20px;
+}
+
+.form-animal h2 {
+  margin-bottom: 40px;
+}
+
+/*----------------------------*/
+
+/*Style Form-Content*/
+#showLabel {
+  visibility: inherit;
+  height: 20px;
+  width: 20px;
+}
+
+label {
+  visibility: hidden;
+  height: 0.1px;
+  width: 0.1px;
+}
+
+input {
+  padding: 10px;
+  background: #e4e6e7;
+  border: #e4e6e7;
+  border-radius: 10px;
+  font-size: 17px;
+  height: 45px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.imgPerfil img {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  margin-top: -83px;
+}
+
+#imgPerfilCadastrar {
+  margin-top: -10px;
+}
+
+#imgPerfilUploaded {
+  margin-top: -10px;
+}
+
+/*CSS Buttons*/
+.buttons {
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+}
+.buttons button {
+  background: #388cc8;
+  color: #fff;
+  border-radius: 50px;
+  border-color: #388cc8;
+  font-size: 15px;
+  font-weight: 700;
+  margin-top: 5px;
+}
+
+.cancel-button {
+  margin-right: 33%;
+}
+
+.fileButton {
+  height: 0.1px;
+  width: 0.1px;
+  display: none;
+}
+
+#font {
+  font-size: 10px;
+  height: 20px;
+  width: 20px;
+}
+
+.container-full {
+  margin-top: 50px;
+}
+
+/*Medias CSS*/
+
+@media (max-width: 1150px) {
+  #backgroundDiv {
+    display: none;
+  }
+  .imgPerfil {
+    margin-bottom: 15px;
+    margin-left: -30px;
+    margin-top: 40px;
+  }
+  #showLabel {
+    margin-top: -40px;
+  }
+
+  .form-animal {
+    margin-top: -400px;
+  }
+}
+
+@media (max-width: 990px) {
+  #backgroundDiv {
+    display: none;
+  }
+  .imgPerfil {
+    margin-top: 50px;
+    margin-left: -10px;
+  }
+  #showLabel {
+    margin-top: -40px;
+  }
+
+  .marginDiv {
+    margin-bottom: 110px;
+  }
+}

@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 
 //Importações Estilização
 import "./styles/index.css";
+import CadastrarAnimal from "./pages/CadastrarAnimal";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/cadastrarPaciente" element={<CadastrarAnimal />} />
         </Routes>
       </BrowserRouter>
     </>
