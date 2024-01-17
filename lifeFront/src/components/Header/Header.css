@@ -1,0 +1,88 @@
+#header {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.home-icon {
+  width: 100%;
+  height: 100%;
+}
+.nav-item {
+  padding: auto;
+}
+.nav-item:hover {
+  background-color: #24688d;
+  height: 40px;
+  color: #fff;
+}
+
+.navbar-brand {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar-links {
+  display: flex;
+  margin-top: 50px;
+  gap: 40px;
+}
+
+/*Styel Logo*/
+.logo img {
+  width: 400px;
+}
+
+/*Styel Button*/
+.menu-button {
+  display: flex;
+  right: 0;
+}
+
+/*Style navbar*/
+.item-navigation {
+  margin-left: 40px;
+  color: #046890;
+  font-size: 18px;
+}
+
+.navbar .logout {
+  cursor: pointer;
+}
+
+.container-fluid {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+@media (max-width: 1024px) {
+  .menu-button {
+    margin-left: 70vw;
+  }
+}
+
+@media (max-width: 750px) {
+  .menu-button {
+    margin-left: 60vw;
+  }
+}
+
+@media (max-width: 550px) {
+  .menu-button {
+    margin-left: 50vw;
+  }
+}
+
+@media (max-width: 440px) {
+  .menu-button {
+    margin-left: 40vw;
+  }
+}
+
+@media (max-width: 360px) {
+  .menu-button {
+    margin-left: 35vw;
+  }
+}
