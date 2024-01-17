@@ -5,12 +5,9 @@ import getAnimals from "../api.js";
 
 //Importações Estilização
 import Header from "../components/Header/Header";
+import ListaPacientes from "../components/ListaPacientes/ListaPacientes";
 import "../styles/home.css";
-import {
-  AiOutlineSearch,
-  AiOutlineUserAdd,
-  AiTwotoneFilePdf,
-} from "react-icons/ai";
+import { AiOutlineSearch, AiOutlineUserAdd } from "react-icons/ai";
 
 const Home = () => {
   const [animals, setAnimals] = useState([]);
@@ -19,17 +16,11 @@ const Home = () => {
     const fetchData = async () => {
       try {
         const response = await getAnimals();
-        if (!response) {
-          throw new Error("Erro ao obter dados da API");
-        }
-
-        const data = await response.json();
-        setAnimals(data);
+        setAnimals(response);
       } catch (error) {
         console.error("Erro na solicitação:", error);
       }
     };
-
     fetchData();
   }, []);
 
@@ -47,16 +38,8 @@ const Home = () => {
               to="/cadastrarFuncionario"
               className="btn btn-color btn-space mb-2"
             >
-              <AiOutlineUserAdd className="icon-size" /> Cadastrar Funcionário
+              <AiOutlineUserAdd className="icon-size" /> Cadastrar Paciente
             </Link>
-            <button
-              onClick={() => console.log("")}
-              className="btn btn-danger mb-2"
-              type="button"
-              id="button-addon2"
-            >
-              <AiTwotoneFilePdf className="icon-size" /> Gerar PDF
-            </button>
           </div>
           <div className="col-6">
             <div id="displaySearch" className="input-group mb-3">
@@ -76,6 +59,8 @@ const Home = () => {
               </button>
             </div>
           </div>
+
+          <ListaPacientes arrayAnimals={animals} />
         </div>
       </div>
     </div>
