@@ -10,6 +10,7 @@
 }
 .nav-item {
   padding: auto;
+  font-size: 18px;
 }
 .nav-item:hover {
   background-color: #24688d;
@@ -31,7 +32,7 @@
 
 /*Styel Logo*/
 .logo img {
-  width: 400px;
+  width: 325px;
 }
 
 /*Styel Button*/
@@ -44,7 +45,7 @@
 .item-navigation {
   margin-left: 40px;
   color: #046890;
-  font-size: 18px;
+  font-size: 10px;
 }
 
 .navbar .logout {

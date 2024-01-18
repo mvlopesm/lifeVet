@@ -3,13 +3,13 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: #8af5eb;
 }
 
 body {
   background-color: white;
   margin-top: -15px;
   margin-left: -15px;
+  background-color: #8af5eb;
 }
 
 a {

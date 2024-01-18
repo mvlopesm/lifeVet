@@ -10,4 +10,14 @@ const getAnimals = async () => {
   }
 };
 
-export default getAnimals;
+const getAnimalsById = async (id) => {
+  try {
+    const response = await axios.get(`http://localhost:8000/animals/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro na solicitação:", error);
+    throw error;
+  }
+};
+
+export { getAnimals, getAnimalsById };
