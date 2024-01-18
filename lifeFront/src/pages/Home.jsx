@@ -1,9 +1,9 @@
-//Importações React
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
-import getAnimals from "../api.js";
+import { getAnimals } from "../api.js";
+import SweetAlert from "react-bootstrap-sweetalert";
 
-//Importações Estilização
 import Header from "../components/Header/Header";
 import ListaAnimals from "../components/ListaAnimals/ListaAnimals";
 import "../styles/home.css";
@@ -11,6 +11,31 @@ import { AiOutlineSearch, AiOutlineUserAdd } from "react-icons/ai";
 
 const Home = () => {
   const [animals, setAnimals] = useState([]);
+  const [dismiss, setDismiss] = useState("");
+  const [dismissConfirmation, setDismissConfirmation] = useState(false);
+  const [confirmationDismissId, setConfirmationDismissId] = useState("");
+
+  const dismissFuncionario = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8000/animals/destroy/${id}`
+      );
+
+      const updatedAnimals = animals.filter((animal) => animal.id !== id);
+      setAnimals(updatedAnimals);
+      setDismiss(id);
+      setDismissConfirmation(false);
+
+      console.log(response.data);
+    } catch (error) {
+      console.error("Erro ao apagar o cadastro:", error);
+    }
+  };
+
+  const dismissFuncionarioConfirmation = (id) => {
+    setConfirmationDismissId(id);
+    setDismissConfirmation(true);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,7 +49,17 @@ const Home = () => {
     fetchData();
   }, []);
 
-  console.log("dsakjf", animals);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getAnimals();
+        setAnimals(response);
+      } catch (error) {
+        console.error("Erro na solicitação:", error);
+      }
+    };
+    fetchData();
+  }, [dismiss]);
 
   return (
     <div>
@@ -35,7 +70,7 @@ const Home = () => {
         <div className="row">
           <div className="col-6">
             <Link
-              to="/cadastrarFuncionario"
+              to="/cadastrarPaciente"
               className="btn btn-color home-subtitle btn-space mb-2"
             >
               <AiOutlineUserAdd className="icon-size list home-subtitle" />{" "}
@@ -62,7 +97,38 @@ const Home = () => {
             </div>
           </div>
 
-          <ListaAnimals arrayAnimals={animals} />
+          <ListaAnimals
+            arrayAnimals={animals}
+            clickDismiss={dismissFuncionarioConfirmation}
+          />
+
+          {dismissConfirmation ? (
+            <SweetAlert
+              danger
+              showCancel
+              showCloseButton
+              confirmBtnText="Sim"
+              confirmBtnBsStyle="danger"
+              cancelBtnText="Não"
+              cancelBtnBsStyle="light"
+              onConfirm={() => dismissFuncionario(confirmationDismissId)}
+              onCancel={() => setDismissConfirmation(false)}
+              focusCancelBtn
+              style={{ background: "white", color: "black" }}
+              closeBtnStyle={{ color: "#046890" }}
+              cancelBtnStyle={{ backgroundColor: "lightgray" }}
+            >
+              <div
+                style={{
+                  fontSize: "20px",
+                  fontWeight: "bold",
+                  color: "#24688d",
+                }}
+              >
+                Deseja apagar o cadastro do paciente?
+              </div>
+            </SweetAlert>
+          ) : null}
         </div>
       </div>
     </div>

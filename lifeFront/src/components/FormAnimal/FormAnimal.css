@@ -1,27 +1,29 @@
 /* Style Form*/
-#alignForm {
-  margin-top: -40px;
-}
+
 .form {
   display: flex;
   flex-direction: column;
   margin: 50px;
   max-width: 500px;
-  height: 50vh;
-  margin: 7vh auto;
+  margin: auto;
+  margin-top: -70px;
+  z-index: 2;
 }
 
 .form p {
   font-size: 15px;
   margin-left: 15px;
-  color: gray;
+  color: #388cc8;
   font-weight: 500;
+  margin-bottom: 5px;
+  background-color: transparent;
 }
 
 .form h2 {
   color: #388cc8;
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 15px;
+  background-color: #fff;
 }
 
 .form-animal {
@@ -54,8 +56,8 @@ label {
 
 input {
   padding: 10px;
-  background: #e4e6e7;
-  border: #e4e6e7;
+  background: #8af5eb;
+  border: #fff;
   border-radius: 10px;
   font-size: 17px;
   height: 45px;
@@ -65,6 +67,12 @@ input {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  background-color: white;
+}
+
+.content-top {
+  padding: 20px;
+  border-radius: 10px;
 }
 
 .imgPerfil img {
@@ -83,25 +91,10 @@ input {
 }
 
 /*CSS Buttons*/
-.buttons {
-  justify-content: space-between;
-  margin: 0;
-  padding: 0;
+.btn-register {
+  width: 95%;
+  margin-left: 12px;
 }
-.buttons button {
-  background: #388cc8;
-  color: #fff;
-  border-radius: 50px;
-  border-color: #388cc8;
-  font-size: 15px;
-  font-weight: 700;
-  margin-top: 5px;
-}
-
-.cancel-button {
-  margin-right: 33%;
-}
-
 .fileButton {
   height: 0.1px;
   width: 0.1px;
@@ -115,7 +108,11 @@ input {
 }
 
 .container-full {
-  margin-top: 50px;
+  margin-top: 0px;
+}
+
+.row-botton {
+  background-color: #fff;
 }
 
 /*Medias CSS*/

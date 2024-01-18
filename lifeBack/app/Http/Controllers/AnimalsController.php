@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ModelAnimals;
 use App\Models\ModelResults;
+use Illuminate\Support\Facades\DB;
 
 class AnimalsController extends Controller
 {
@@ -39,14 +40,6 @@ class AnimalsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'species' => 'required|string',
-            'breed' => 'required|string',
-            'age' => 'required|integer',
-            'tutor' => 'required|string',
-        ]);
-
         $animal = $this->animalModel->create($request->all());
 
         return response()->json(['message' => 'Animal cadastrado', 'animal' => $animal], 201);
@@ -60,7 +53,7 @@ class AnimalsController extends Controller
         $animal = $this->animalModel->find($id);
 
         if (!$animal) {
-            return response()->json(['message' => 'Animal não encontrado'], 404);
+            return response()->json(['message' => 'teste'], 404);
         }
 
         return response()->json($animal);
@@ -108,9 +101,14 @@ class AnimalsController extends Controller
             return response()->json(['message' => 'Animal não encontrado'], 404);
         }
 
-        DB::transaction(function () use ($animal) {
-            $animal->delete();
-        });
+        try {
+            DB::transaction(function () use ($animal) {
+                $animal->delete();
+            });
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Erro ao excluir animal', 'error' => $e->getMessage()], 500);
+        };
+
 
         return response()->json(['message' => 'Cadastro excluído']);
     }
