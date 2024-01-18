@@ -17,6 +17,6 @@ Route::delete('/results/{id}', [ResultsController::class, 'destroy']);
 // Rotas para AnimalsController
 Route::get('/animals', [AnimalsController::class, 'index']);
 Route::get('/animals/{id}', [AnimalsController::class, 'show']);
-Route::post('/animals', [AnimalsController::class, 'store']);
-Route::put('/animals/{id}', [AnimalsController::class, 'update']);
-Route::delete('/animals/{id}', [AnimalsController::class, 'destroy']);
+Route::post('/animals/store', [AnimalsController::class, 'store']);
+Route::put('/animals/update/{id}', [AnimalsController::class, 'update']);
+Route::delete('/animals/destroy/{id}', [AnimalsController::class, 'destroy']);

@@ -19,7 +19,7 @@ const ListaAnimals = (props) => {
             <th scope="col">Idade</th>
             <th scope="col">Tutor</th>
             <th scope="col" className="col-action">
-              Editar / Demitir{" "}
+              Editar / Apagar{" "}
             </th>
           </tr>
         </thead>
