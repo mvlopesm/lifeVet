@@ -20,4 +20,34 @@ const getAnimalsById = async (id) => {
   }
 };
 
-export { getAnimals, getAnimalsById };
+const getExamTypes = async () => {
+  try {
+    const response = await axios.get(`http://localhost:8000/exam-types`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro na solicitação:", error);
+    throw error;
+  }
+};
+
+const getExams = async () => {
+  try {
+    const response = await axios.get(`http://localhost:8000/exams`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro na solicitação:", error);
+    throw error;
+  }
+};
+
+const getExamsResults = async () => {
+  try {
+    const response = await axios.get(`http://localhost:8000/exams-results`);
+    return response.data;
+  } catch (error) {
+    console.error("Erro na solicitação:", error);
+    throw error;
+  }
+};
+
+export { getAnimals, getAnimalsById, getExamTypes, getExams, getExamsResults };

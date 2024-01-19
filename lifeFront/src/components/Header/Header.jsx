@@ -26,6 +26,11 @@ const Header = () => {
               </Link>
             </div>
             <div>
+              <Link className="nav-item active p-2" to="/exames">
+                Exames
+              </Link>
+            </div>
+            <div>
               <Link className="nav-item active p-2">Sair</Link>
             </div>
           </div>

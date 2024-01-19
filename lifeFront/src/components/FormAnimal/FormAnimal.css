@@ -63,6 +63,28 @@ input {
   height: 45px;
 }
 
+select {
+  padding: 10px;
+  background: #8af5eb;
+  border: #fff;
+  border-radius: 10px;
+  font-size: 17px;
+  height: 45px;
+}
+
+textarea {
+  padding: 10px;
+  background: #8af5eb;
+  border: #fff;
+  border-radius: 10px;
+  font-size: 17px;
+  height: 70px;
+}
+
+#texteAreaModal {
+  margin: 10px;
+}
+
 .content {
   display: flex;
   flex-direction: column;
@@ -113,6 +135,38 @@ input {
 
 .row-botton {
   background-color: #fff;
+}
+
+.commentTextarea {
+  color: #046890;
+}
+
+.commentTextarea::placeholder {
+  color: #046890;
+}
+
+.commentTextarea:focus {
+  outline: none;
+  border: 2px solid #046890;
+}
+
+.container-full-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1000px;
+}
+
+.blur-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
 }
 
 /*Medias CSS*/
