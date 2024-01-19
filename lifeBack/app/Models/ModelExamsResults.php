@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ModelResults extends Model
+class ModelExamsResults extends Model
 {
     use HasFactory;
 
-    protected $table = 'results';
-
-    protected $fillable = ['result'];
+    protected $table = 'exams_results';
+    protected $fillable = ['animal_id', 'exam_id', 'comment', 'result'];
 
     public function relAnimal()
     {

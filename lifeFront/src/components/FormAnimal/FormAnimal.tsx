@@ -62,6 +62,7 @@ const FormFuncionario = () => {
             placeholder="Nome"
             id="name"
             name="name"
+            className="commentTextarea"
           />
           <p>ex: Paçoca</p>
 
@@ -75,6 +76,7 @@ const FormFuncionario = () => {
             placeholder="Especie"
             id="species"
             name="species"
+            className="commentTextarea"
           />
           <p>ex: Cachorro</p>
 
@@ -88,6 +90,7 @@ const FormFuncionario = () => {
             placeholder="Raça"
             id="breed"
             name="breed"
+            className="commentTextarea"
           />
           <p>Labrador</p>
 
@@ -104,9 +107,10 @@ const FormFuncionario = () => {
                   placeholder="Idade"
                   id="age"
                   name="age"
+                  className="commentTextarea"
                 />
 
-                <p>4</p>
+                <p>ex: 4</p>
               </div>
 
               <div className="content col-lg-6">
@@ -119,6 +123,7 @@ const FormFuncionario = () => {
                   placeholder="Tutor"
                   id="tutor"
                   name="tutor"
+                  className="commentTextarea"
                 />
                 <p>ex: Carlos</p>
               </div>

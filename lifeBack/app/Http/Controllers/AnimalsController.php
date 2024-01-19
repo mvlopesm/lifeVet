@@ -4,18 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ModelAnimals;
-use App\Models\ModelResults;
+use App\Models\ModelExamsResults;
 use Illuminate\Support\Facades\DB;
 
 class AnimalsController extends Controller
 {
     private $animalModel;
-    private $resultsModel;
+    private $examsResultsModel;
 
     public function __construct()
     {
         $this->animalModel = new ModelAnimals();
-        $this->resultsModel = new ModelResults();
+        $this->examsResultsModel = new ModelExamsResults();
     }
 
     /**
@@ -41,7 +41,6 @@ class AnimalsController extends Controller
     public function store(Request $request)
     {
         $animal = $this->animalModel->create($request->all());
-
         return response()->json(['message' => 'Animal cadastrado', 'animal' => $animal], 201);
     }
 

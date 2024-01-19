@@ -4,23 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\ModelAnimals;
-use App\Models\ModelResults;
+use App\Models\ModelExamsResults;
+use Illuminate\Support\Facades\DB;
 
-class ResultsController extends Controller
+class ExamsResultsController extends Controller
 {
     private $animalModel;
-    private $resultsModel;
+    private $examsResultsModel;
 
     public function __construct()
     {
         $this->animalModel = new ModelAnimals();
-        $this->resultsModel = new ModelResults();
+        $this->examsResultsModel = new ModelExamsResults();
     }
 
     public function index()
     {
-        $results = $this->resultsModel->all();
-        return response()->json($results);
+        $examsResults = $this->examsResultsModel->all();
+        return response()->json($examsResults);
     }
 
     /**
@@ -40,18 +41,20 @@ class ResultsController extends Controller
         $request->validate([
             'animal_id' => 'required|exists:animals,id',
             'exam_id' => 'required|exists:exams,id',
-            'result' => 'required|string',
+            'comment' => 'string',
+            'result' => 'string',
         ]);
 
         // Criação de um novo resultado
-        $result = $this->resultsModel->create([
+        $examsResult = $this->examsResultsModel->create([
             'animal_id' => $request->input('animal_id'),
             'exam_id' => $request->input('exam_id'),
+            'comment' => $request->input('comment'),
             'result' => $request->input('result'),
         ]);
 
         // Retorno de uma resposta ou redirecionamento, conforme necessário
-        return response()->json(['message' => 'O resultado do exame foi concluído', 'result' => $result], 201);
+        return response()->json(['message' => 'O exame foi atualizado', 'result' => $examsResult], 201);
     }
 
 
@@ -60,13 +63,13 @@ class ResultsController extends Controller
      */
     public function show(string $id)
     {
-        $result = $this->resultsModel->find($id);
+        $examsResult = $this->examsResultsModel->find($id);
 
-        if (!$result) {
-            return response()->json(['message' => 'Nenhum resultado foi encontrado'], 404);
+        if (!$examsResult) {
+            return response()->json(['message' => 'Nenhum exame foi encontrado'], 404);
         }
 
-        return response()->json($result);
+        return response()->json($examsResult);
     }
 
     /**
@@ -86,19 +89,20 @@ class ResultsController extends Controller
         $request->validate([
             'animal_id' => 'exists:animals,id',
             'exam_id' => 'exists:exams,id',
+            'comment' => 'string',
             'result' => 'string',
         ]);
 
-        $result = $this->resultsModel->find($id);
+        $examsResult = $this->examsResultsModel->find($id);
 
-        if (!$result) {
+        if (!$examsResult) {
             return response()->json(['message' => 'Nenhum resultado foi encontrado'], 404);
         }
 
         // Atualização dos dados do resultado
-        $result->update($request->only(['animal_id', 'exam_id', 'result']));
+        $examsResult->update($request->only(['animal_id', 'exam_id', 'comment', 'result']));
 
-        return response()->json(['message' => 'O resultado do exame doi alterado', 'result' => $result]);
+        return response()->json(['message' => 'O exame foi alterado', 'result' => $examsResult]);
     }
 
     /**
@@ -106,17 +110,19 @@ class ResultsController extends Controller
      */
     public function destroy(string $id)
     {
-        $result = $this->resultsModel->find($id);
+        $examsResult = $this->examsResultsModel->find($id);
 
-        if (!$result) {
+        if (!$examsResult) {
             return response()->json(['message' => 'Nenhum resultado foi encontrado'], 404);
         }
 
-        // Remoção do resultado do banco de dados
-        DB::transaction(function () use ($result) {
-            $result->delete();
-        });
-
-        return response()->json(['message' => 'O resultado do exame foi apagado']);
+        try {
+            DB::transaction(function () use ($examsResult) {
+                $examsResult->delete();
+            });
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Erro ao excluir animal', 'error' => $e->getMessage()], 500);
+        };
+        return response()->json(['message' => 'O exame foi apagado']);
     }
 }
