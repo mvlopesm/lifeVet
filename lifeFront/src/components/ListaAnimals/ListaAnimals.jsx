@@ -2,9 +2,10 @@
 import React from "react";
 import "./ListaAnimals.css";
 import { Link } from "react-router-dom";
+import { RiFolderHistoryLine } from "react-icons/ri";
 
 //Importações Estilização
-import { AiFillEdit, AiTwotoneDelete } from "react-icons/ai";
+import { AiFillEdit, AiOutlinePlus, AiTwotoneDelete } from "react-icons/ai";
 
 //Renderização da Lista de animals
 const ListaAnimals = (props) => {
@@ -18,6 +19,9 @@ const ListaAnimals = (props) => {
             <th scope="col">Raça</th>
             <th scope="col">Idade</th>
             <th scope="col">Tutor</th>
+            <th scope="col" className="col-action">
+              Exames
+            </th>
             <th scope="col" className="col-action">
               Editar / Apagar{" "}
             </th>
@@ -34,17 +38,37 @@ const ListaAnimals = (props) => {
                 <td>{animal.age}</td>
                 <td>{animal.tutor}</td>
                 <td className="list">
+                  <Link className="list" to={"/solicitarExame/" + animal.id}>
+                    <AiOutlinePlus
+                      title="Solicitar Exame"
+                      className="icon-action list"
+                    />
+                  </Link>
+                  <Link className="list" to={`/exames/${animal.id}`}>
+                    <RiFolderHistoryLine
+                      title="Exames Cadastrados"
+                      className="icon-action list"
+                    />
+                  </Link>
+                </td>
+                <td className="list">
                   <Link className="list" to={"/atualizarCadastro/" + animal.id}>
-                    <AiFillEdit className="icon-action list" />
+                    <AiFillEdit
+                      title="Editar Paciente"
+                      className="icon-action list"
+                    />
                   </Link>
                   <Link
                     className="list"
                     to=""
                     onClick={() => {
-                      props.clickDismiss(animal.id);
+                      props.deleteAnimalConfirmation(animal.id);
                     }}
                   >
-                    <AiTwotoneDelete className="icon-action list" />
+                    <AiTwotoneDelete
+                      title="Deletar Paciente"
+                      className="icon-action list"
+                    />
                   </Link>
                 </td>
               </tr>

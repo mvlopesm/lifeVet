@@ -6,8 +6,7 @@ import Header from "../components/Header/Header";
 import { getAnimalsById } from "../api";
 import { useParams } from "react-router-dom";
 
-const FormFuncionario = () => {
-  const [animals, setAnimals] = useState([]);
+const AtualizarCadastro = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [breed, setBreed] = useState("");
@@ -16,13 +15,10 @@ const FormFuncionario = () => {
   const [errorMessages, setErrorMessages] = useState("");
 
   const { id } = useParams();
-  console.log("id", id);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await getAnimalsById(id);
-        setAnimals(response);
-        // Preencher os campos do formulário com os dados obtidos
         setName(response.name);
         setSpecies(response.species);
         setBreed(response.breed);
@@ -34,7 +30,6 @@ const FormFuncionario = () => {
     };
     fetchData();
   }, [id]);
-  console.log("oppppa", animals);
 
   const handleUpdate = async () => {
     try {
@@ -166,4 +161,4 @@ const FormFuncionario = () => {
   );
 };
 
-export default FormFuncionario;
+export default AtualizarCadastro;
