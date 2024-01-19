@@ -11,8 +11,6 @@ class ModelExams extends Model
 
     protected $table = 'exams';
 
-    protected $fillable = ['name', 'exam_type_id'];
-
     public function relAnimal()
     {
         return $this->belongsTo(ModelAnimals::class, 'animal_id');
