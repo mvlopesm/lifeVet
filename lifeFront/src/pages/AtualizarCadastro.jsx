@@ -1,10 +1,10 @@
-//Importações React
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "../components/FormAnimal/FormAnimal.css";
-import Header from "../components/Header/Header";
 import { getAnimalsById } from "../api";
 import { useParams } from "react-router-dom";
+
+import "../components/FormAnimal/FormAnimal.css";
+import Header from "../components/Header/Header";
 
 const AtualizarCadastro = () => {
   const [name, setName] = useState("");
@@ -78,7 +78,7 @@ const AtualizarCadastro = () => {
                 setName(e.target.value);
               }}
               type="text"
-              placeholder="Nome"
+              placeholder={"Carregando..."}
               id="name"
               name="name"
             />
@@ -91,7 +91,7 @@ const AtualizarCadastro = () => {
                 setSpecies(e.target.value);
               }}
               type="text"
-              placeholder="Especie"
+              placeholder={"Carregando..."}
               id="species"
               name="species"
             />
@@ -104,7 +104,7 @@ const AtualizarCadastro = () => {
                 setBreed(e.target.value);
               }}
               type="text"
-              placeholder="Raça"
+              placeholder={"Carregando..."}
               id="breed"
               name="breed"
             />
@@ -120,7 +120,7 @@ const AtualizarCadastro = () => {
                       setAge(e.target.value);
                     }}
                     type="number"
-                    placeholder="Idade"
+                    placeholder={"Carregando..."}
                     id="age"
                     name="age"
                   />
@@ -135,7 +135,7 @@ const AtualizarCadastro = () => {
                       setTutor(e.target.value);
                     }}
                     type="text"
-                    placeholder="Tutor"
+                    placeholder={"Carregando..."}
                     id="tutor"
                     name="tutor"
                   />

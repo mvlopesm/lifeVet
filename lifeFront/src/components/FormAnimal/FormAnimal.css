@@ -1,5 +1,4 @@
 /* Style Form*/
-
 .form {
   display: flex;
   flex-direction: column;
@@ -38,8 +37,6 @@
 .form-animal h2 {
   margin-bottom: 40px;
 }
-
-/*----------------------------*/
 
 /*Style Form-Content*/
 #showLabel {

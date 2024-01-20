@@ -20,6 +20,8 @@ const Home = () => {
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [confirmationDeleteId, setConfirmationDeleteId] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [finishLoading, setFinishLoading] = useState(false);
+
   const excludedFields = ["created_at", "updated_at", "id"];
 
   const deleteAnimal = async (id) => {
@@ -49,6 +51,7 @@ const Home = () => {
       try {
         const response = await getAnimals();
         setAnimals(response);
+        setFinishLoading(true);
       } catch (error) {
         console.error("Erro na solicitação:", error);
       }
@@ -80,21 +83,21 @@ const Home = () => {
               to="/cadastrarPaciente"
               className="btn btn-color home-subtitle btn-space mb-2"
             >
-              <AiOutlineUserAdd className="icon-size list home-subtitle" />{" "}
+              <AiOutlineUserAdd className="icon-size list home-subtitle" />
               Cadastrar Paciente
             </Link>
             <Link
               to="/solicitarExame"
               className="btn btn-color home-subtitle btn-space mb-2"
             >
-              <AiOutlinePlus className="icon-size list home-subtitle" />{" "}
+              <AiOutlinePlus className="icon-size list home-subtitle" />
               Solicitar Exame
             </Link>
             <Link
               to="/exames"
               className="btn btn-color home-subtitle btn-space mb-2"
             >
-              <AiOutlineOrderedList className="icon-size list home-subtitle" />{" "}
+              <AiOutlineOrderedList className="icon-size list home-subtitle" />
               Exames Cadastrados
             </Link>
           </div>
@@ -102,14 +105,14 @@ const Home = () => {
           <div className="col-5">
             <div id="displaySearch" className="input-group mb-3">
               <input
-                onChange={(e) => setSearchTerm(e.target.value)} // Atualiza o termo de pesquisa ao digitar
+                onChange={(e) => setSearchTerm(e.target.value)}
                 type="text"
                 className="form-control"
                 placeholder="Pesquisar"
                 aria-describedby="button-addon2"
               />
               <button
-                onClick={() => console.log("")} // Adicione a lógica de pesquisa aqui
+                onClick={() => console.log("")}
                 className="btn btn-color home-subtitle"
                 type="button"
                 id="button-addon2"
@@ -134,6 +137,8 @@ const Home = () => {
               })
             )}
             deleteAnimalConfirmation={deleteAnimalConfirmation}
+            searchTerm={searchTerm}
+            finishLoading={finishLoading}
           />
 
           {deleteConfirmation ? (
@@ -145,6 +150,7 @@ const Home = () => {
               confirmBtnBsStyle="danger"
               cancelBtnText="Não"
               cancelBtnBsStyle="light"
+              onClick={() => console.log("klm", confirmationDeleteId)}
               onConfirm={() => deleteAnimal(confirmationDeleteId)}
               onCancel={() => setDeleteConfirmation(false)}
               focusCancelBtn

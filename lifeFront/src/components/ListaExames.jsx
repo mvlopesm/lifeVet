@@ -1,14 +1,10 @@
-//Importações React
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
 import { getAnimals, getExams } from "../api.js";
 
-//Importações Estilização
 import { AiFillEdit, AiOutlineClose, AiTwotoneDelete } from "react-icons/ai";
 
-//Renderização da Lista de animals
 const ListaExames = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [animals, setAnimals] = useState([]);
@@ -42,22 +38,33 @@ const ListaExames = (props) => {
   const handleUpdate = async () => {
     try {
       if (!updateResult) {
-        console.log("Preencha o resultado do exame.");
+        return;
+      }
+
+      const selectedAnimal = animals.find(
+        (animal) => animal.name === selectedExam.animalName
+      );
+
+      const selectedExamData = exams.find(
+        (exam) => exam.name === selectedExam.examName
+      );
+
+      if (!selectedAnimal || !selectedExamData) {
+        console.error("Animal or exam data not found.");
         return;
       }
 
       const response = await axios.put(
         `http://localhost:8000/exams-results/update/${selectedExam.id}`,
         {
-          animal_id: selectedExam.animal_id,
-          exam_id: selectedExam.exam_id,
+          animal_id: selectedAnimal.id,
+          exam_id: selectedExamData.id,
           comment: selectedExam.comment,
           result: updateResult,
         }
       );
 
       toggleModal();
-
       console.log(response.data);
       window.location.href = "/exames";
     } catch (error) {
@@ -75,55 +82,65 @@ const ListaExames = (props) => {
             <th scope="col">Exame</th>
             <th scope="col">Comentário</th>
             <th scope="col">Resultado</th>
-            {/* <th scope="col" className="col-action">
-              Exames
-            </th> */}
             <th scope="col" className="col-action iconExamDelete">
               Deletar
             </th>
           </tr>
         </thead>
+        {props.arrayExamsResults.length > 0 ? (
+          <tbody>
+            {props.arrayExamsResults.map((exam) => {
+              return (
+                <tr key={exam.id} className="list-row">
+                  <td>{exam.animalName}</td>
+                  <td>{exam.tutorName}</td>
+                  <td>{exam.examName}</td>
+                  <td>{exam.comment}</td>
+                  <td id="relative-position">
+                    <div>
+                      <p>{exam.result}</p>
 
-        <tbody>
-          {props.arrayExamsResults.map((exam) => {
-            return (
-              <tr key={exam.id} className="list-row">
-                <td>{exam.animalName}</td>
-                <td>{exam.tutorName}</td>
-                <td>{exam.examName}</td>
-                <td>{exam.comment}</td>
-                <td id="relative-position">
-                  <div>
-                    <p>{exam.result}</p>
-
+                      <Link
+                        onClick={() => handleSelectExam(exam)}
+                        className="list"
+                      >
+                        <AiFillEdit
+                          title="Editar Resultado"
+                          className="iconResultEdit"
+                        />
+                      </Link>
+                    </div>
+                  </td>
+                  <td className="iconExamDelete">
                     <Link
-                      onClick={() => handleSelectExam(exam)}
-                      className="list"
+                      to=""
+                      onClick={() => {
+                        props.clickDelete(exam.id);
+                      }}
                     >
-                      <AiFillEdit
-                        title="Editar Resultado"
-                        className="iconResultEdit"
+                      <AiTwotoneDelete
+                        title="Deletar Exame"
+                        className="icon-action"
                       />
                     </Link>
-                  </div>
-                </td>
-                <td className="iconExamDelete">
-                  <Link
-                    to=""
-                    onClick={() => {
-                      props.clickDelete(exam.id);
-                    }}
-                  >
-                    <AiTwotoneDelete
-                      title="Deletar Exame"
-                      className="icon-action"
-                    />
-                  </Link>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        ) : (
+          <tbody>
+            <tr className="list-row">
+              <td className="text-center" colSpan="7">
+                {props.finishLoading === false
+                  ? "Carregando lista dos pacientes..."
+                  : props.searchTerm.length > 0
+                  ? "Nenhum resultado encontrado"
+                  : "Nenhum exame cadastrado"}
+              </td>
+            </tr>
+          </tbody>
+        )}
       </table>
 
       {showModal && (
@@ -134,6 +151,7 @@ const ListaExames = (props) => {
                 <Link onClick={() => toggleModal()} className="list">
                   <AiOutlineClose title="Fechar" className="iconResultEdit" />
                 </Link>
+
                 <h2 className="mb-2">Resultado do Exame</h2>
                 <textarea
                   value={updateResult}

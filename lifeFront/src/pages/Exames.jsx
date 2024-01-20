@@ -2,16 +2,15 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { getExamsResults, getAnimals, getExams } from "../api.js";
-import SweetAlert from "react-bootstrap-sweetalert";
 import { useParams } from "react-router-dom";
 
+import SweetAlert from "react-bootstrap-sweetalert";
 import Header from "../components/Header/Header.jsx";
 import ListaExames from "../components/ListaExames.jsx";
 import "../styles/home.css";
 import {
   AiOutlinePlus,
   AiOutlineSearch,
-  AiOutlineUserAdd,
   AiOutlineOrderedList,
 } from "react-icons/ai";
 
@@ -24,32 +23,10 @@ const Exames = () => {
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [confirmationDeleteId, setConfirmationDeleteId] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [idAnimalSearchTerm, setIdAnimalSearchTerm] = useState(false);
+  const [finishLoading, setFinishLoading] = useState(false);
 
   const { idAnimal } = useParams();
-
-  const deleteExamsResult = async (id) => {
-    try {
-      const response = await axios.delete(
-        `http://localhost:8000/exams-results/destroy/${id}`
-      );
-
-      const updatedExamsResult = examsResults.filter(
-        (animal) => animal.id !== id
-      );
-      setExamsResults(updatedExamsResult);
-      setDeleted(id);
-      setDeleteConfirmation(false);
-
-      console.log(response.data);
-    } catch (error) {
-      console.error("Erro ao apagar o cadastro:", error);
-    }
-  };
-
-  const deleteExamsResultsConfirmation = (id) => {
-    setConfirmationDeleteId(id);
-    setDeleteConfirmation(true);
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,19 +37,20 @@ const Exames = () => {
         setAnimals(responseAnimals);
         const responseExams = await getExams();
         setExams(responseExams);
+        setFinishLoading(true);
       } catch (error) {
         console.error("Erro na solicitação:", error);
       }
     };
     fetchData();
 
-    if (idAnimal) {
+    if (idAnimal && !idAnimalSearchTerm) {
       const foundAnimal = animals.find((animal) => animal.id == idAnimal);
       if (foundAnimal) {
         setSearchTerm(foundAnimal.name);
       }
     }
-  }, [animals, idAnimal]);
+  }, [animals, idAnimal, idAnimalSearchTerm]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -102,6 +80,7 @@ const Exames = () => {
         const matchingExam = exams.find((exam) => exam.id === result.exam_id);
 
         return {
+          id: result.id,
           comment: result.comment ? result.comment : "Sem comentários...",
           result: result.result ? result.result : "Aguardando Resultado...",
           animalName: matchingAnimal
@@ -118,9 +97,34 @@ const Exames = () => {
     }
   }, [examsResults, animals, exams, setProcessedExams]);
 
+  const deleteExamsResult = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://localhost:8000/exams-results/destroy/${id}`
+      );
+
+      const updatedExamsResult = examsResults.filter(
+        (animal) => animal.id !== id
+      );
+      setExamsResults(updatedExamsResult);
+      setDeleted(id);
+      setDeleteConfirmation(false);
+
+      console.log(response.data);
+    } catch (error) {
+      console.error("Erro ao apagar o cadastro:", error);
+    }
+  };
+
+  const deleteExamsResultsConfirmation = (id) => {
+    setConfirmationDeleteId(id);
+    setDeleteConfirmation(true);
+  };
+
   return (
     <div>
       <Header />
+
       <div className="container">
         <h2 className="mt-4 mb-4 home-title">Exames</h2>
 
@@ -151,7 +155,10 @@ const Exames = () => {
           <div className="col-5">
             <div id="displaySearch" className="input-group mb-3">
               <input
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => {
+                  setIdAnimalSearchTerm(true);
+                  setSearchTerm(e.target.value);
+                }}
                 type="text"
                 className="form-control"
                 placeholder="Pesquisar"
@@ -177,11 +184,12 @@ const Exames = () => {
                   const searchTermLower = searchTerm.toLowerCase();
                   return fieldValue.includes(searchTermLower);
                 }
-                // Adicione mais lógica para tipos de dados diferentes, se necessário
                 return false;
               })
             )}
             clickDelete={deleteExamsResultsConfirmation}
+            searchTerm={searchTerm}
+            finishLoading={finishLoading}
           />
 
           {deleteConfirmation ? (

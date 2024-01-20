@@ -1,6 +1,6 @@
-//Importações React
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
+
 import "./FormAnimal.css";
 
 const FormFuncionario = () => {
@@ -35,10 +35,10 @@ const FormFuncionario = () => {
       setBreed("");
       setAge("");
       setTutor("");
+
       window.location.href = "/";
     } catch (error) {
       console.error("Erro ao cadastrar animal", error);
-
       setErrorMessages("Erro ao cadastrar animal. Tente novamente mais tarde.");
     }
   };
@@ -109,7 +109,6 @@ const FormFuncionario = () => {
                   name="age"
                   className="commentTextarea"
                 />
-
                 <p>ex: 4</p>
               </div>
 
@@ -136,7 +135,6 @@ const FormFuncionario = () => {
                 Cadastrar Paciente
               </button>
 
-              {/* Exibir mensagens de erro, se houverem */}
               {errorMessages && (
                 <div className="error-message">{errorMessages}</div>
               )}

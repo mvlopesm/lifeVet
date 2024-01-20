@@ -1,16 +1,17 @@
-//Importações React
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "../components/FormAnimal/FormAnimal.css";
-import Header from "../components/Header/Header";
 import { getAnimals, getExamTypes, getExams } from "../api";
 import { useParams } from "react-router-dom";
+
+import "../components/FormAnimal/FormAnimal.css";
+import Header from "../components/Header/Header";
 
 const SolicitarExame = () => {
   const [exams, setExams] = useState([]);
   const [examTypes, setExamTypes] = useState([]);
   const [animals, setAnimals] = useState([]);
   const [selectedAnimal, setSelectedAnimal] = useState("");
+  const [selectedExamType, setSelectedExamType] = useState("");
   const [comment, setComment] = useState("");
   const [errorMessages, setErrorMessages] = useState("");
 
@@ -52,16 +53,13 @@ const SolicitarExame = () => {
     const fetchDataAnimal = async () => {
       try {
         if (idAnimal) {
-          // Obtenha os dados dos animais
           const response = await getAnimals();
           setAnimals(response);
 
-          // Encontre o animal correspondente com base no idAnimal
           const selectedAnimal = response.find(
             (animal) => animal.id.toString() === idAnimal.toString()
           );
 
-          // Se o animal for encontrado, defina-o como selectedAnimal
           if (selectedAnimal) {
             setSelectedAnimal(selectedAnimal);
           }
@@ -85,27 +83,38 @@ const SolicitarExame = () => {
       const examId = exams.find((exam) => exam.name === examElement.value).id;
       const comment = document.getElementById("comment").value;
 
-      // Make an HTTP POST request to the Laravel backend
-      const response = await axios.post("http://localhost:8000/results/store", {
-        animal_id: animalId,
-        exam_id: examId,
-        comment: comment,
-      });
+      const response = await axios.post(
+        "http://localhost:8000/exams-results/store",
+        {
+          animal_id: animalId,
+          exam_id: examId,
+          comment: comment,
+        }
+      );
 
       console.log("Response from Laravel:", response.data);
       setErrorMessages("");
       window.location.href = "/exames";
-
-      // Handle success or update the UI as needed
     } catch (error) {
       console.error("Error while submitting:", error);
       setErrorMessages(error);
     }
   };
 
+  const handleTypeExam = (typeName) => {
+    const foundType = examTypes.find((type) => type.name === typeName);
+
+    if (foundType) {
+      setSelectedExamType(foundType.id);
+    } else {
+      console.error("Selected exam type not found");
+    }
+  };
+
   return (
     <>
       <Header />
+
       <div className="container-full">
         <div className="row container-margins">
           <div
@@ -119,17 +128,21 @@ const SolicitarExame = () => {
               id="examTypes"
               name="examTypes"
               style={{ color: "#046890" }}
+              onChange={(e) => handleTypeExam(e.target.value)}
             >
               <option value="" disabled selected hidden>
                 Selecione um Tipo
               </option>
-              {examTypes.map((type, index) => (
-                <option key={index} value={type.name}>
-                  {type.name}
-                </option>
-              ))}
+              {examTypes.length > 0 ? (
+                examTypes.map((type, index) => (
+                  <option key={index} value={type.name}>
+                    {type.name}
+                  </option>
+                ))
+              ) : (
+                <option>Carregando dados...</option>
+              )}
             </select>
-
             <p>ex: Bioquímica</p>
 
             <label htmlFor="exams">Exames</label>
@@ -137,12 +150,19 @@ const SolicitarExame = () => {
               <option value="" disabled selected hidden>
                 Selecione um Exame
               </option>
-
-              {exams.map((type, index) => (
-                <option key={index} value={type.name}>
-                  {type.name}
-                </option>
-              ))}
+              {selectedExamType ? (
+                exams
+                  .filter(
+                    (exam) => exam.exam_type_id.toString() == selectedExamType
+                  )
+                  .map((exam) => (
+                    <option key={exam.id} value={exam.name}>
+                      {exam.name}
+                    </option>
+                  ))
+              ) : (
+                <option>Selecione o tipo do exame</option>
+              )}
             </select>
             <p>ex: Albumina</p>
 
@@ -157,13 +177,17 @@ const SolicitarExame = () => {
               <option value="" disabled hidden>
                 Selecione o Paciente
               </option>
-              {animals.map((type, index) => (
-                <option key={index} value={type.name}>
-                  {type.name}
-                </option>
-              ))}
-            </select>
 
+              {animals.length > 0 ? (
+                animals.map((type, index) => (
+                  <option key={index} value={type.name}>
+                    {type.name}
+                  </option>
+                ))
+              ) : (
+                <option>Carregando dados...</option>
+              )}
+            </select>
             <p>ex: Cookie</p>
 
             <label htmlFor="comment">Raça</label>
@@ -191,8 +215,7 @@ const SolicitarExame = () => {
             </div>
             {errorMessages && (
               <div className="error-message">
-                {errorMessages.message || "Ocorreu um erro"}{" "}
-                {/* Exibindo a mensagem de erro */}
+                {errorMessages.message || "Ocorreu um erro"}
               </div>
             )}
           </div>
