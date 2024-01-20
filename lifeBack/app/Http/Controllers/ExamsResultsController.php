@@ -41,8 +41,8 @@ class ExamsResultsController extends Controller
         $request->validate([
             'animal_id' => 'required|exists:animals,id',
             'exam_id' => 'required|exists:exams,id',
-            'comment' => 'string',
-            'result' => 'string',
+            'comment' => 'nullable|string',
+            'result' => 'nullable|string',
         ]);
 
         // Criação de um novo resultado
@@ -123,6 +123,7 @@ class ExamsResultsController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao excluir animal', 'error' => $e->getMessage()], 500);
         };
+
         return response()->json(['message' => 'O exame foi apagado']);
     }
 }
