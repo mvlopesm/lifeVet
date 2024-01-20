@@ -1,6 +1,6 @@
-//Importações React
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
+
 import "./FormAnimal.css";
 
 const FormFuncionario = () => {
@@ -35,10 +35,10 @@ const FormFuncionario = () => {
       setBreed("");
       setAge("");
       setTutor("");
+
       window.location.href = "/";
     } catch (error) {
       console.error("Erro ao cadastrar animal", error);
-
       setErrorMessages("Erro ao cadastrar animal. Tente novamente mais tarde.");
     }
   };
@@ -62,6 +62,7 @@ const FormFuncionario = () => {
             placeholder="Nome"
             id="name"
             name="name"
+            className="commentTextarea"
           />
           <p>ex: Paçoca</p>
 
@@ -75,6 +76,7 @@ const FormFuncionario = () => {
             placeholder="Especie"
             id="species"
             name="species"
+            className="commentTextarea"
           />
           <p>ex: Cachorro</p>
 
@@ -88,6 +90,7 @@ const FormFuncionario = () => {
             placeholder="Raça"
             id="breed"
             name="breed"
+            className="commentTextarea"
           />
           <p>Labrador</p>
 
@@ -104,9 +107,9 @@ const FormFuncionario = () => {
                   placeholder="Idade"
                   id="age"
                   name="age"
+                  className="commentTextarea"
                 />
-
-                <p>4</p>
+                <p>ex: 4</p>
               </div>
 
               <div className="content col-lg-6">
@@ -119,6 +122,7 @@ const FormFuncionario = () => {
                   placeholder="Tutor"
                   id="tutor"
                   name="tutor"
+                  className="commentTextarea"
                 />
                 <p>ex: Carlos</p>
               </div>
@@ -131,7 +135,6 @@ const FormFuncionario = () => {
                 Cadastrar Paciente
               </button>
 
-              {/* Exibir mensagens de erro, se houverem */}
               {errorMessages && (
                 <div className="error-message">{errorMessages}</div>
               )}

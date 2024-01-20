@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('animal_id')->constrained('animals')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('exam_id')->constrained('exams')->onDelete('cascade')->onUpdate('cascade');
-            $table->string('comment');
+            $table->string('comment')->nullable();
             $table->string('result')->nullable();
             $table->timestamps();
         });

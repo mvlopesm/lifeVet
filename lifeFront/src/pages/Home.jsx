@@ -7,15 +7,24 @@ import SweetAlert from "react-bootstrap-sweetalert";
 import Header from "../components/Header/Header";
 import ListaAnimals from "../components/ListaAnimals/ListaAnimals";
 import "../styles/home.css";
-import { AiOutlineSearch, AiOutlineUserAdd } from "react-icons/ai";
+import {
+  AiOutlinePlus,
+  AiOutlineSearch,
+  AiOutlineUserAdd,
+  AiOutlineOrderedList,
+} from "react-icons/ai";
 
 const Home = () => {
   const [animals, setAnimals] = useState([]);
-  const [dismiss, setDismiss] = useState("");
-  const [dismissConfirmation, setDismissConfirmation] = useState(false);
-  const [confirmationDismissId, setConfirmationDismissId] = useState("");
+  const [deleted, setDeleted] = useState("");
+  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
+  const [confirmationDeleteId, setConfirmationDeleteId] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [finishLoading, setFinishLoading] = useState(false);
 
-  const dismissFuncionario = async (id) => {
+  const excludedFields = ["created_at", "updated_at", "id"];
+
+  const deleteAnimal = async (id) => {
     try {
       const response = await axios.delete(
         `http://localhost:8000/animals/destroy/${id}`
@@ -23,8 +32,8 @@ const Home = () => {
 
       const updatedAnimals = animals.filter((animal) => animal.id !== id);
       setAnimals(updatedAnimals);
-      setDismiss(id);
-      setDismissConfirmation(false);
+      setDeleted(id);
+      setDeleteConfirmation(false);
 
       console.log(response.data);
     } catch (error) {
@@ -32,9 +41,9 @@ const Home = () => {
     }
   };
 
-  const dismissFuncionarioConfirmation = (id) => {
-    setConfirmationDismissId(id);
-    setDismissConfirmation(true);
+  const deleteAnimalConfirmation = (id) => {
+    setConfirmationDeleteId(id);
+    setDeleteConfirmation(true);
   };
 
   useEffect(() => {
@@ -42,6 +51,7 @@ const Home = () => {
       try {
         const response = await getAnimals();
         setAnimals(response);
+        setFinishLoading(true);
       } catch (error) {
         console.error("Erro na solicitação:", error);
       }
@@ -59,34 +69,50 @@ const Home = () => {
       }
     };
     fetchData();
-  }, [dismiss]);
+  }, [deleted]);
 
   return (
     <div>
       <Header />
       <div className="container">
-        <h2 className="mt-3 mb-5 home-title">Meus Pacientes</h2>
+        <h2 className="mt-4 mb-4 home-title">Meus Pacientes</h2>
 
         <div className="row">
-          <div className="col-6">
+          <div className="col-7">
             <Link
               to="/cadastrarPaciente"
               className="btn btn-color home-subtitle btn-space mb-2"
             >
-              <AiOutlineUserAdd className="icon-size list home-subtitle" />{" "}
+              <AiOutlineUserAdd className="icon-size list home-subtitle" />
               Cadastrar Paciente
             </Link>
+            <Link
+              to="/solicitarExame"
+              className="btn btn-color home-subtitle btn-space mb-2"
+            >
+              <AiOutlinePlus className="icon-size list home-subtitle" />
+              Solicitar Exame
+            </Link>
+            <Link
+              to="/exames"
+              className="btn btn-color home-subtitle btn-space mb-2"
+            >
+              <AiOutlineOrderedList className="icon-size list home-subtitle" />
+              Exames Cadastrados
+            </Link>
           </div>
-          <div className="col-6">
+
+          <div className="col-5">
             <div id="displaySearch" className="input-group mb-3">
               <input
-                onChange={() => console.log("")}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 type="text"
                 className="form-control"
                 placeholder="Pesquisar"
                 aria-describedby="button-addon2"
               />
               <button
+                onClick={() => console.log("")}
                 className="btn btn-color home-subtitle"
                 type="button"
                 id="button-addon2"
@@ -98,11 +124,24 @@ const Home = () => {
           </div>
 
           <ListaAnimals
-            arrayAnimals={animals}
-            clickDismiss={dismissFuncionarioConfirmation}
+            arrayAnimals={animals.filter((animal) =>
+              Object.entries(animal).some(([key, value]) => {
+                const fieldValue = value.toString().toLowerCase();
+                const searchTermLower = searchTerm.toLowerCase();
+
+                if (!excludedFields.includes(key)) {
+                  return fieldValue.includes(searchTermLower);
+                }
+
+                return false;
+              })
+            )}
+            deleteAnimalConfirmation={deleteAnimalConfirmation}
+            searchTerm={searchTerm}
+            finishLoading={finishLoading}
           />
 
-          {dismissConfirmation ? (
+          {deleteConfirmation ? (
             <SweetAlert
               danger
               showCancel
@@ -111,8 +150,9 @@ const Home = () => {
               confirmBtnBsStyle="danger"
               cancelBtnText="Não"
               cancelBtnBsStyle="light"
-              onConfirm={() => dismissFuncionario(confirmationDismissId)}
-              onCancel={() => setDismissConfirmation(false)}
+              onClick={() => console.log("klm", confirmationDeleteId)}
+              onConfirm={() => deleteAnimal(confirmationDeleteId)}
+              onCancel={() => setDeleteConfirmation(false)}
               focusCancelBtn
               style={{ background: "white", color: "black" }}
               closeBtnStyle={{ color: "#046890" }}

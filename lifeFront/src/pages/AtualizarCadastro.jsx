@@ -1,13 +1,12 @@
-//Importações React
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "../components/FormAnimal/FormAnimal.css";
-import Header from "../components/Header/Header";
 import { getAnimalsById } from "../api";
 import { useParams } from "react-router-dom";
 
-const FormFuncionario = () => {
-  const [animals, setAnimals] = useState([]);
+import "../components/FormAnimal/FormAnimal.css";
+import Header from "../components/Header/Header";
+
+const AtualizarCadastro = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [breed, setBreed] = useState("");
@@ -16,13 +15,10 @@ const FormFuncionario = () => {
   const [errorMessages, setErrorMessages] = useState("");
 
   const { id } = useParams();
-  console.log("id", id);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await getAnimalsById(id);
-        setAnimals(response);
-        // Preencher os campos do formulário com os dados obtidos
         setName(response.name);
         setSpecies(response.species);
         setBreed(response.breed);
@@ -34,7 +30,6 @@ const FormFuncionario = () => {
     };
     fetchData();
   }, [id]);
-  console.log("oppppa", animals);
 
   const handleUpdate = async () => {
     try {
@@ -83,7 +78,7 @@ const FormFuncionario = () => {
                 setName(e.target.value);
               }}
               type="text"
-              placeholder="Nome"
+              placeholder={"Carregando..."}
               id="name"
               name="name"
             />
@@ -96,7 +91,7 @@ const FormFuncionario = () => {
                 setSpecies(e.target.value);
               }}
               type="text"
-              placeholder="Especie"
+              placeholder={"Carregando..."}
               id="species"
               name="species"
             />
@@ -109,7 +104,7 @@ const FormFuncionario = () => {
                 setBreed(e.target.value);
               }}
               type="text"
-              placeholder="Raça"
+              placeholder={"Carregando..."}
               id="breed"
               name="breed"
             />
@@ -125,7 +120,7 @@ const FormFuncionario = () => {
                       setAge(e.target.value);
                     }}
                     type="number"
-                    placeholder="Idade"
+                    placeholder={"Carregando..."}
                     id="age"
                     name="age"
                   />
@@ -140,7 +135,7 @@ const FormFuncionario = () => {
                       setTutor(e.target.value);
                     }}
                     type="text"
-                    placeholder="Tutor"
+                    placeholder={"Carregando..."}
                     id="tutor"
                     name="tutor"
                   />
@@ -166,4 +161,4 @@ const FormFuncionario = () => {
   );
 };
 
-export default FormFuncionario;
+export default AtualizarCadastro;

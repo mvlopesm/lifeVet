@@ -1,8 +1,9 @@
-import Header from "../components/Header/Header";
 import React from "react";
+
+import Header from "../components/Header/Header";
 import FormAnimal from "../components/FormAnimal/FormAnimal";
 
-const CadastrarFuncionario = () => {
+const CadastrarAnimal = () => {
   return (
     <div>
       <Header />
@@ -11,4 +12,4 @@ const CadastrarFuncionario = () => {
   );
 };
 
-export default CadastrarFuncionario;
+export default CadastrarAnimal;
