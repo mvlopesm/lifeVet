@@ -150,7 +150,6 @@ const Home = () => {
               confirmBtnBsStyle="danger"
               cancelBtnText="Não"
               cancelBtnBsStyle="light"
-              onClick={() => console.log("klm", confirmationDeleteId)}
               onConfirm={() => deleteAnimal(confirmationDeleteId)}
               onCancel={() => setDeleteConfirmation(false)}
               focusCancelBtn

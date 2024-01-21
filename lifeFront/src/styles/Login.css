@@ -1,0 +1,52 @@
+.form-signin {
+  max-width: 500px;
+  width: 500px;
+  padding: 20px;
+  margin-top: 300px auto;
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  margin: auto;
+  margin-top: -30px;
+  z-index: 2;
+}
+
+.form-signin p {
+  font-size: 15px;
+  margin-left: 15px;
+  color: #046890;
+  font-weight: 500;
+  margin-bottom: 5px;
+  background-color: transparent;
+}
+
+.form-signin h2 {
+  color: #046890;
+  text-align: center;
+  margin-bottom: 15px;
+  background-color: #fff;
+}
+
+.submitButton {
+  color: #fff;
+  background-color: #046890;
+}
+
+.links {
+  margin-top: 25px;
+  font-size: 16px;
+}
+
+.boxSizing {
+  height: 60px;
+}
+
+#btn-SingUp {
+  background: #046890;
+  color: #fff;
+}
+
+.grid-centralize {
+  margin: 20px auto;
+  text-align: center;
+}
