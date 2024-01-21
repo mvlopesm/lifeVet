@@ -6,7 +6,6 @@
 }
 
 body {
-  background-color: white;
   margin-top: -15px;
   margin-left: -15px;
   background-color: #8af5eb;
@@ -20,4 +19,10 @@ a {
 
 a:hover {
   color: #12466b;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  margin: 5px;
 }

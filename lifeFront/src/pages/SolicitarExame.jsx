@@ -79,12 +79,17 @@ const SolicitarExame = () => {
 
       const animalId = animals.find(
         (animal) => animal.name === animalElement.value
-      ).id;
-      const examId = exams.find((exam) => exam.name === examElement.value).id;
+      )?.id;
+      const examId = exams.find((exam) => exam.name === examElement.value)?.id;
       const comment = document.getElementById("comment").value;
 
+      if (!animalId || !examId) {
+        setErrorMessages("Preencha todos os campos.");
+        return;
+      }
+
       const response = await axios.post(
-        "http://localhost:8000/exams-results/store",
+        "http://localhost:8000/api/exams-results/store",
         {
           animal_id: animalId,
           exam_id: examId,
@@ -215,7 +220,7 @@ const SolicitarExame = () => {
             </div>
             {errorMessages && (
               <div className="error-message">
-                {errorMessages.message || "Ocorreu um erro"}
+                {errorMessages || "Ocorreu um erro"}
               </div>
             )}
           </div>
