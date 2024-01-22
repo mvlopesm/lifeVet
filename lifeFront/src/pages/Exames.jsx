@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { axiosInstance } from "../api.js";
 import { Link } from "react-router-dom";
 import { getExamsResults, getAnimals, getExams } from "../api.js";
 import { useParams } from "react-router-dom";
@@ -101,8 +101,8 @@ const Exames = () => {
   const deleteExamsResult = async (id) => {
     setLoading(true);
     try {
-      const response = await axios.delete(
-        `http://localhost:8000/exams-results/destroy/${id}`
+      const response = await axiosInstance().delete(
+        `/exams-results/destroy/${id}`
       );
 
       const updatedExamsResult = examsResults.filter(
@@ -112,8 +112,6 @@ const Exames = () => {
       setDeleted(id);
       setDeleteConfirmation(false);
       setLoading(false);
-
-      console.log(response.data);
     } catch (error) {
       setLoading(false);
       console.error("Erro ao apagar o cadastro:", error);

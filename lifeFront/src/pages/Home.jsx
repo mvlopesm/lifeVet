@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { axiosInstance } from "../api.js";
 import { Link } from "react-router-dom";
 import { getAnimals } from "../api.js";
 import SweetAlert from "react-bootstrap-sweetalert";
@@ -27,17 +27,13 @@ const Home = () => {
   const deleteAnimal = async (id) => {
     setLoading(true);
     try {
-      const response = await axios.delete(
-        `http://localhost:8000/animals/destroy/${id}`
-      );
+      const response = await axiosInstance().delete(`/animals/destroy/${id}`);
 
       const updatedAnimals = animals.filter((animal) => animal.id !== id);
       setAnimals(updatedAnimals);
       setDeleted(id);
       setDeleteConfirmation(false);
       setLoading(false);
-
-      console.log(response.data);
     } catch (error) {
       setLoading(false);
       console.error("Erro ao apagar o cadastro:", error.response.data.message);

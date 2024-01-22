@@ -1,5 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
+import { axiosInstance } from "../../api.js";
+import { useNavigate } from "react-router-dom";
 
 import "./FormAnimal.css";
 
@@ -11,6 +12,7 @@ const FormAnimal = () => {
   const [tutor, setTutor] = useState("");
   const [errorMessages, setErrorMessages] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async () => {
     try {
@@ -62,15 +64,13 @@ const FormAnimal = () => {
       setErrorMessages("");
       setLoading(true);
 
-      const response = await axios.post("http://localhost:8000/animals/store", {
+      const response = await axiosInstance().post("/animals/store", {
         name,
         species,
         breed,
         age,
         tutor,
       });
-
-      console.log(response.data);
 
       setName("");
       setSpecies("");
@@ -79,7 +79,7 @@ const FormAnimal = () => {
       setTutor("");
 
       setLoading(false);
-      window.location.href = "/";
+      navigate("/");
     } catch (error) {
       setLoading(false);
       console.error("Erro ao cadastrar animal", error);
@@ -136,7 +136,7 @@ const FormAnimal = () => {
             name="breed"
             className="commentTextarea"
           />
-          <p>Labrador</p>
+          <p>ex: Labrador</p>
 
           <div>
             <div className="row row-botton">
