@@ -40,9 +40,19 @@ class AnimalsController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string|min:3',
+            'species' => 'required|string',
+            'breed' => 'required|string',
+            'age' => 'required|integer',
+            'tutor' => 'required|string|min:3',
+        ]);
+
         $animal = $this->animalModel->create($request->all());
+
         return response()->json(['message' => 'Animal cadastrado', 'animal' => $animal], 201);
     }
+
 
     /**
      * Display the specified resource.
@@ -72,11 +82,11 @@ class AnimalsController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'string',
-            'species' => 'string',
-            'breed' => 'string',
-            'age' => 'integer',
-            'tutor' => 'string',
+            'name' => 'required|string|min:3',
+            'species' => 'required|string',
+            'breed' => 'required|string',
+            'age' => 'required|integer',
+            'tutor' => 'required|string|min:3',
         ]);
 
         $animal = $this->animalModel->find($id);

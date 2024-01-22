@@ -21,10 +21,11 @@ const Home = () => {
   const [confirmationDeleteId, setConfirmationDeleteId] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [finishLoading, setFinishLoading] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   const excludedFields = ["created_at", "updated_at", "id"];
 
   const deleteAnimal = async (id) => {
+    setLoading(true);
     try {
       const response = await axios.delete(
         `http://localhost:8000/animals/destroy/${id}`
@@ -34,10 +35,12 @@ const Home = () => {
       setAnimals(updatedAnimals);
       setDeleted(id);
       setDeleteConfirmation(false);
+      setLoading(false);
 
       console.log(response.data);
     } catch (error) {
-      console.error("Erro ao apagar o cadastro:", error);
+      setLoading(false);
+      console.error("Erro ao apagar o cadastro:", error.response.data.message);
     }
   };
 
@@ -150,7 +153,6 @@ const Home = () => {
               confirmBtnBsStyle="danger"
               cancelBtnText="Não"
               cancelBtnBsStyle="light"
-              onClick={() => console.log("klm", confirmationDeleteId)}
               onConfirm={() => deleteAnimal(confirmationDeleteId)}
               onCancel={() => setDeleteConfirmation(false)}
               focusCancelBtn
@@ -167,6 +169,13 @@ const Home = () => {
               >
                 Deseja apagar o cadastro do paciente?
               </div>
+              {loading && (
+                <div className="d-flex justify-content-center mt-2">
+                  <div className="spinner-border w-[1000px]" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              )}
             </SweetAlert>
           ) : null}
         </div>
