@@ -13,6 +13,7 @@ const AtualizarCadastro = () => {
   const [species, setSpecies] = useState("");
   const [tutor, setTutor] = useState("");
   const [errorMessages, setErrorMessages] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { id } = useParams();
   useEffect(() => {
@@ -33,12 +34,52 @@ const AtualizarCadastro = () => {
 
   const handleUpdate = async () => {
     try {
+      // Validar se todos os campos estão preenchidos
       if (!name || !species || !breed || !age || !tutor) {
         setErrorMessages("Preencha todos os campos.");
         return;
       }
 
+      // Validar o nome permitindo acentos
+      const nameRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿ\s]+$/;
+      if (name.length < 3 || !nameRegex.test(name)) {
+        setErrorMessages(
+          "O nome deve ter pelo menos 3 caracteres e pode conter apenas letras e espaços."
+        );
+        return;
+      }
+
+      // Validar a espécie permitindo acentos
+      const speciesRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿ\s]+$/;
+      if (!speciesRegex.test(species)) {
+        setErrorMessages("A espécie deve conter apenas letras e espaços.");
+        return;
+      }
+
+      // Validar a raça permitindo acentos
+      const breedRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿ\s]+$/;
+      if (!breedRegex.test(breed)) {
+        setErrorMessages("A raça deve conter apenas letras e espaços.");
+        return;
+      }
+
+      // Validar o tutor permitindo acentos
+      const tutorRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿ\s]+$/;
+      if (tutor.length < 3 || !tutorRegex.test(tutor)) {
+        setErrorMessages(
+          "O tutor deve ter pelo menos 3 caracteres e pode conter apenas letras e espaços."
+        );
+        return;
+      }
+      // Validar a idade
+      const ageRegex = /^[0-9]+$/;
+      if (!ageRegex.test(age)) {
+        setErrorMessages("A idade deve conter apenas números.");
+        return;
+      }
+
       setErrorMessages("");
+      setLoading(true);
 
       const response = await axios.put(
         `http://localhost:8000/animals/update/${id}`,
@@ -51,10 +92,10 @@ const AtualizarCadastro = () => {
         }
       );
 
-      console.log(response.data);
-
+      setLoading(false);
       window.location.href = "/";
     } catch (error) {
+      setLoading(false);
       console.error("Erro ao atualizar animal", error);
       setErrorMessages("Erro ao atualizar animal. Tente novamente mais tarde.");
     }
@@ -84,7 +125,7 @@ const AtualizarCadastro = () => {
             />
             <p>ex: Paçoca</p>
 
-            <label htmlFor="species">Especie</label>
+            <label htmlFor="species">Espécie</label>
             <input
               value={species}
               onChange={(e) => {
@@ -156,6 +197,13 @@ const AtualizarCadastro = () => {
             </div>
           </div>
         </div>
+        {loading && (
+          <div className="d-flex justify-content-center mt-2">
+            <div className="spinner-border w-[1000px]" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

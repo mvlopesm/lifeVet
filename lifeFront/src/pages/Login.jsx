@@ -1,4 +1,4 @@
-//Importações React
+// Importações React
 import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
@@ -13,26 +13,46 @@ const LoginComponent = () => {
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState("");
   const { setLogged } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await axios
-        .post("http://localhost:8000/login", {
-          email: email,
-          password: password,
-        })
-        .then(() => {
-          localStorage.setItem("logged", "S");
-          setLogged(true);
-          setSuccess("S");
-        });
+    if (!email || !password) {
+      setError("Por favor, preencha o email e senha.");
+      return;
+    }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("Por favor, insira um email válido.");
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("A senha deve ter pelo menos 8 caracteres.");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await axios.post("http://localhost:8000/login", {
+        email: email,
+        password: password,
+      });
+
+      localStorage.setItem("logged", "S");
+      setLoading(false);
+      setLogged(true);
       setSuccess("S");
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log(error.response.data.message);
       setSuccess("N");
+      setError("Email ou senha inválida");
+      setLoading(false);
     }
   };
 
@@ -73,11 +93,11 @@ const LoginComponent = () => {
             Acessar
           </button>
 
-          {success === "N" ? (
-            <div className="mt-3" style={{ color: "red" }} role="alert">
-              Email ou senha inválida
+          {error && (
+            <div className="mt-3" style={{ color: "red" }}>
+              {error}
             </div>
-          ) : null}
+          )}
 
           {success === "S" ? <Navigate to="/" /> : null}
 
@@ -88,6 +108,13 @@ const LoginComponent = () => {
           </div>
         </form>
       </div>
+      {loading && (
+        <div className="d-flex justify-content-center mt-2">
+          <div className="spinner-border w-[1000px]" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

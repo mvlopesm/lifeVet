@@ -11,6 +11,11 @@ class LoginController extends Controller
 {
     public function store(Request $request)
     {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:8',
+        ]);
+
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
             $user = Auth::user();
             $token = $user->createToken("JWT");
@@ -18,32 +23,36 @@ class LoginController extends Controller
             return response()->json($token->plainTextToken, 200);
         }
 
-        // Se a autenticação falhar, você pode retornar uma resposta de erro
         return response()->json(['error' => 'Credenciais inválidas'], 401);
     }
 
+
     public function register(Request $request)
     {
-        // Validar os dados do usuário
         $request->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:6',
         ]);
 
-        // Criar um novo usuário
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
 
-        // Logar automaticamente o novo usuário
-        Auth::login($user);
+            Auth::login($user);
 
-        // Criar e retornar um token para o novo usuário
-        $token = $user->createToken("JWT");
+            $token = $user->createToken("JWT");
 
-        return response()->json($token->plainTextToken, 201);
+            return response()->json($token->plainTextToken, 201);
+        } catch (\Illuminate\Database\QueryException $e) {
+            if ($e->errorInfo[1] == 1062) {
+                return response()->json(['error' => 'Email já cadastrado.'], 422);
+            }
+            return response()->json(['error' => 'Erro ao criar o usuário.'], 500);
+        }
     }
+
 }

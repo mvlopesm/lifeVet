@@ -5,7 +5,6 @@ import { useContext } from "react";
 import "./styles/index.css";
 
 import Login from "./pages/Login";
-import RecuperarSenha from "./pages/RecuperarSenha";
 import CriarConta from "./pages/CriarConta";
 
 import Home from "./pages/Home";
@@ -30,7 +29,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/login/recuperarSenha" element={<RecuperarSenha />} />
           <Route path="/login/criarConta" element={<CriarConta />} />
 
           <Route

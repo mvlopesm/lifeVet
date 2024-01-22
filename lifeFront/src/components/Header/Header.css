@@ -10,18 +10,28 @@
 }
 .nav-item {
   padding: auto;
-  font-size: 18px;
+  font-size: 16px;
 }
+
+.nav-item-selected {
+  padding: 8px;
+  font-size: 16px;
+  background-color: #24688d;
+  color: #fff;
+}
+
 .nav-item:hover {
   background-color: #24688d;
   height: 40px;
   color: #fff;
+  padding: 4px;
 }
 
 .navbar-brand {
   width: 100%;
   display: flex;
   justify-content: space-between;
+  margin-right: 100px;
 }
 
 .navbar-links {

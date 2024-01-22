@@ -1,3 +1,4 @@
+// Importações React
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { getAnimals, getExamTypes, getExams } from "../api";
@@ -14,6 +15,7 @@ const SolicitarExame = () => {
   const [selectedExamType, setSelectedExamType] = useState("");
   const [comment, setComment] = useState("");
   const [errorMessages, setErrorMessages] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const { idAnimal } = useParams();
 
@@ -81,28 +83,34 @@ const SolicitarExame = () => {
         (animal) => animal.name === animalElement.value
       )?.id;
       const examId = exams.find((exam) => exam.name === examElement.value)?.id;
-      const comment = document.getElementById("comment").value;
+      const commentValue = comment.trim();
 
-      if (!animalId || !examId) {
-        setErrorMessages("Preencha todos os campos.");
+      // Validar se todos os campos estão preenchidos
+      if (!selectedExamType || !animalId || !examId) {
+        setErrorMessages("Exame e paciente são obrigatórios.");
+        setLoading(false);
         return;
       }
 
+      setErrorMessages("");
+      setLoading(true);
+
       const response = await axios.post(
-        "http://localhost:8000/api/exams-results/store",
+        "http://localhost:8000/exams-results/store",
         {
           animal_id: animalId,
           exam_id: examId,
-          comment: comment,
+          comment: commentValue,
         }
       );
 
+      setLoading(false);
       console.log("Response from Laravel:", response.data);
-      setErrorMessages("");
       window.location.href = "/exames";
     } catch (error) {
-      console.error("Error while submitting:", error);
-      setErrorMessages(error);
+      setLoading(false);
+      console.error("Error while submitting:", error.response.data.message);
+      setErrorMessages("Ocorreu um erro. Tente novamente mais tarde.");
     }
   };
 
@@ -120,7 +128,7 @@ const SolicitarExame = () => {
     <>
       <Header />
 
-      <div className="container-full">
+      <div className="container-solicit">
         <div className="row container-margins">
           <div
             id="alignForm"
@@ -195,7 +203,7 @@ const SolicitarExame = () => {
             </select>
             <p>ex: Cookie</p>
 
-            <label htmlFor="comment">Raça</label>
+            <label htmlFor="comment">Comentário</label>
             <textarea
               value={comment}
               onChange={(e) => {
@@ -225,6 +233,13 @@ const SolicitarExame = () => {
             )}
           </div>
         </div>
+        {loading && (
+          <div className="d-flex justify-content-center mt-2">
+            <div className="spinner-border w-[1000px]" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
