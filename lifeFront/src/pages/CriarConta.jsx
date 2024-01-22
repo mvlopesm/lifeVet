@@ -1,7 +1,7 @@
 // Importações React
 import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import axios from "axios";
+import { axiosInstance } from "../api";
 import { useContext } from "react";
 import { AuthContext } from "../Context/auth";
 
@@ -51,7 +51,7 @@ const CriarConta = () => {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:8000/register", {
+      const response = await axiosInstance().post("/register", {
         name: name,
         email: email,
         password: password,
@@ -62,7 +62,7 @@ const CriarConta = () => {
       setSuccess("S");
       setLoading(false);
     } catch (error) {
-      console.log(error);
+      console.error(error);
 
       if (error.response && error.response.status === 422) {
         // Verifica se a mensagem do erro é específica de "already taken"

@@ -1,8 +1,19 @@
 import axios from "axios";
 
+// Função para criar uma instância axios com cabeçalhos incluindo o token
+const axiosInstance = () => {
+  const token = localStorage.getItem("token");
+  return axios.create({
+    baseURL: "http://localhost:8000/api", // Defina a URL base da API
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
 const getAnimals = async () => {
   try {
-    const response = await axios.get("http://localhost:8000/animals");
+    const response = await axiosInstance().get("/animals");
     return response.data;
   } catch (error) {
     console.error("Erro na solicitação:", error);
@@ -12,7 +23,7 @@ const getAnimals = async () => {
 
 const getAnimalsById = async (id) => {
   try {
-    const response = await axios.get(`http://localhost:8000/animals/${id}`);
+    const response = await axiosInstance().get(`/animals/${id}`);
     return response.data;
   } catch (error) {
     console.error("Erro na solicitação:", error);
@@ -22,7 +33,7 @@ const getAnimalsById = async (id) => {
 
 const getExamTypes = async () => {
   try {
-    const response = await axios.get(`http://localhost:8000/exam-types`);
+    const response = await axiosInstance().get("/exam-types");
     return response.data;
   } catch (error) {
     console.error("Erro na solicitação:", error);
@@ -32,7 +43,7 @@ const getExamTypes = async () => {
 
 const getExams = async () => {
   try {
-    const response = await axios.get(`http://localhost:8000/exams`);
+    const response = await axiosInstance().get("/exams");
     return response.data;
   } catch (error) {
     console.error("Erro na solicitação:", error);
@@ -42,7 +53,7 @@ const getExams = async () => {
 
 const getExamsResults = async () => {
   try {
-    const response = await axios.get(`http://localhost:8000/exams-results`);
+    const response = await axiosInstance().get("/exams-results");
     return response.data;
   } catch (error) {
     console.error("Erro na solicitação:", error);
@@ -50,4 +61,11 @@ const getExamsResults = async () => {
   }
 };
 
-export { getAnimals, getAnimalsById, getExamTypes, getExams, getExamsResults };
+export {
+  getAnimals,
+  getAnimalsById,
+  getExamTypes,
+  getExams,
+  getExamsResults,
+  axiosInstance,
+};

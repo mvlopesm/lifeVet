@@ -1,7 +1,7 @@
 // Importações React
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, Navigate } from "react-router-dom";
-import axios from "axios";
+import { axiosInstance } from "../api";
 import { AuthContext } from "../Context/auth";
 import { useContext } from "react";
 
@@ -39,22 +39,32 @@ const LoginComponent = () => {
     setError("");
 
     try {
-      const response = await axios.post("http://localhost:8000/login", {
+      const response = await axiosInstance().post("/login", {
         email: email,
         password: password,
       });
 
-      localStorage.setItem("logged", "S");
+      // Armazene o token no armazenamento local
+      localStorage.setItem("token", response.data);
+
+      // Defina o estado de login e a bandeira de sucesso
       setLoading(false);
       setLogged(true);
       setSuccess("S");
     } catch (error) {
-      console.log(error.response.data.message);
+      console.error(error?.response?.data.message);
       setSuccess("N");
       setError("Email ou senha inválida");
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setLogged(true);
+    }
+  }, [setLogged]);
 
   return (
     <div>

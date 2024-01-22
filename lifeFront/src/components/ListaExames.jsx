@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { axiosInstance } from "../api.js";
 import { Link } from "react-router-dom";
 import { getAnimals, getExams } from "../api.js";
+import { useNavigate } from "react-router-dom";
 
 import { AiFillEdit, AiOutlineClose, AiTwotoneDelete } from "react-icons/ai";
 
@@ -13,6 +14,7 @@ const ListaExames = (props) => {
   const [updateResult, setUpdateResult] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,8 +62,8 @@ const ListaExames = (props) => {
       setLoading(true);
       setError("");
 
-      const response = await axios.put(
-        `http://localhost:8000/exams-results/update/${selectedExam.id}`,
+      const response = await axiosInstance().put(
+        `/exams-results/update/${selectedExam.id}`,
         {
           animal_id: selectedAnimal.id,
           exam_id: selectedExamData.id,
@@ -71,8 +73,7 @@ const ListaExames = (props) => {
       );
       setLoading(false);
       toggleModal();
-      console.log(response.data);
-      window.location.href = "/exames";
+      navigate("/exames");
     } catch (error) {
       setLoading(false);
       console.error(

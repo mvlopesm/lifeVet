@@ -1,8 +1,8 @@
 // Importações React
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { axiosInstance } from "../api";
 import { getAnimals, getExamTypes, getExams } from "../api";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 import "../components/FormAnimal/FormAnimal.css";
 import Header from "../components/Header/Header";
@@ -16,6 +16,7 @@ const SolicitarExame = () => {
   const [comment, setComment] = useState("");
   const [errorMessages, setErrorMessages] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const { idAnimal } = useParams();
 
@@ -95,18 +96,14 @@ const SolicitarExame = () => {
       setErrorMessages("");
       setLoading(true);
 
-      const response = await axios.post(
-        "http://localhost:8000/exams-results/store",
-        {
-          animal_id: animalId,
-          exam_id: examId,
-          comment: commentValue,
-        }
-      );
+      const response = await axiosInstance().post("/exams-results/store", {
+        animal_id: animalId,
+        exam_id: examId,
+        comment: commentValue,
+      });
 
       setLoading(false);
-      console.log("Response from Laravel:", response.data);
-      window.location.href = "/exames";
+      navigate("/exames");
     } catch (error) {
       setLoading(false);
       console.error("Error while submitting:", error.response.data.message);

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { axiosInstance } from "../api";
 import { getAnimalsById } from "../api";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import "../components/FormAnimal/FormAnimal.css";
 import Header from "../components/Header/Header";
@@ -14,6 +15,7 @@ const AtualizarCadastro = () => {
   const [tutor, setTutor] = useState("");
   const [errorMessages, setErrorMessages] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const { id } = useParams();
   useEffect(() => {
@@ -81,19 +83,16 @@ const AtualizarCadastro = () => {
       setErrorMessages("");
       setLoading(true);
 
-      const response = await axios.put(
-        `http://localhost:8000/animals/update/${id}`,
-        {
-          name,
-          species,
-          breed,
-          age,
-          tutor,
-        }
-      );
+      const response = await axiosInstance().put(`/animals/update/${id}`, {
+        name,
+        species,
+        breed,
+        age,
+        tutor,
+      });
 
       setLoading(false);
-      window.location.href = "/";
+      navigate("/");
     } catch (error) {
       setLoading(false);
       console.error("Erro ao atualizar animal", error);
@@ -149,7 +148,7 @@ const AtualizarCadastro = () => {
               id="breed"
               name="breed"
             />
-            <p>Labrador</p>
+            <p>ex: Labrador</p>
 
             <div>
               <div className="row row-botton">
@@ -166,7 +165,7 @@ const AtualizarCadastro = () => {
                     name="age"
                   />
 
-                  <p>4</p>
+                  <p>ex: 4</p>
                 </div>
 
                 <div className="content col-lg-6">
