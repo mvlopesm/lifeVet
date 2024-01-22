@@ -25,6 +25,7 @@ const Exames = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [idAnimalSearchTerm, setIdAnimalSearchTerm] = useState(false);
   const [finishLoading, setFinishLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { idAnimal } = useParams();
 
@@ -98,6 +99,7 @@ const Exames = () => {
   }, [examsResults, animals, exams, setProcessedExams]);
 
   const deleteExamsResult = async (id) => {
+    setLoading(true);
     try {
       const response = await axios.delete(
         `http://localhost:8000/exams-results/destroy/${id}`
@@ -109,9 +111,11 @@ const Exames = () => {
       setExamsResults(updatedExamsResult);
       setDeleted(id);
       setDeleteConfirmation(false);
+      setLoading(false);
 
       console.log(response.data);
     } catch (error) {
+      setLoading(false);
       console.error("Erro ao apagar o cadastro:", error);
     }
   };
@@ -195,6 +199,7 @@ const Exames = () => {
           {deleteConfirmation ? (
             <SweetAlert
               danger
+              title=""
               showCancel
               showCloseButton
               confirmBtnText="Sim"
@@ -217,6 +222,13 @@ const Exames = () => {
               >
                 Deseja apagar o exame?
               </div>
+              {loading && (
+                <div className="d-flex justify-content-center mt-2">
+                  <div className="spinner-border w-[1000px]" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                </div>
+              )}
             </SweetAlert>
           ) : null}
         </div>

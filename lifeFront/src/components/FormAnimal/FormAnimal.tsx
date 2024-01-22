@@ -3,22 +3,64 @@ import axios from "axios";
 
 import "./FormAnimal.css";
 
-const FormFuncionario = () => {
+const FormAnimal = () => {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [breed, setBreed] = useState("");
   const [species, setSpecies] = useState("");
   const [tutor, setTutor] = useState("");
   const [errorMessages, setErrorMessages] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
     try {
+      // Validar se todos os campos estão preenchidos
       if (!name || !species || !breed || !age || !tutor) {
         setErrorMessages("Preencha todos os campos.");
         return;
       }
 
+      // Validar o nome permitindo acentos
+      const nameRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿ\s]+$/;
+      if (name.length < 3 || !nameRegex.test(name)) {
+        setErrorMessages(
+          "O nome deve ter pelo menos 3 caracteres e pode conter apenas letras e espaços."
+        );
+        return;
+      }
+
+      // Validar a espécie permitindo acentos
+      const speciesRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿ\s]+$/;
+      if (!speciesRegex.test(species)) {
+        setErrorMessages("A espécie deve conter apenas letras e espaços.");
+        return;
+      }
+
+      // Validar a raça permitindo acentos
+      const breedRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿ\s]+$/;
+      if (!breedRegex.test(breed)) {
+        setErrorMessages("A raça deve conter apenas letras e espaços.");
+        return;
+      }
+
+      // Validar o tutor permitindo acentos
+      const tutorRegex = /^[a-zA-ZÀ-ÖØ-öø-ÿ\s]+$/;
+      if (tutor.length < 3 || !tutorRegex.test(tutor)) {
+        setErrorMessages(
+          "O tutor deve ter pelo menos 3 caracteres e pode conter apenas letras e espaços."
+        );
+        return;
+      }
+
+      // Validar a idade
+      const ageRegex = /^[0-9]+$/;
+      if (!ageRegex.test(age)) {
+        setErrorMessages("A idade deve conter apenas números.");
+        return;
+      }
+
       setErrorMessages("");
+      setLoading(true);
 
       const response = await axios.post("http://localhost:8000/animals/store", {
         name,
@@ -36,10 +78,12 @@ const FormFuncionario = () => {
       setAge("");
       setTutor("");
 
+      setLoading(false);
       window.location.href = "/";
     } catch (error) {
+      setLoading(false);
       console.error("Erro ao cadastrar animal", error);
-      setErrorMessages("Erro ao cadastrar animal. Tente novamente mais tarde.");
+      setErrorMessages("Erro ao cadastrar. Tente novamente.");
     }
   };
 
@@ -66,14 +110,14 @@ const FormFuncionario = () => {
           />
           <p>ex: Paçoca</p>
 
-          <label htmlFor="species">Especie</label>
+          <label htmlFor="species">Espécie</label>
           <input
             value={species}
             onChange={(e) => {
               setSpecies(e.target.value);
             }}
             type="text"
-            placeholder="Especie"
+            placeholder="Espécie"
             id="species"
             name="species"
             className="commentTextarea"
@@ -142,8 +186,15 @@ const FormFuncionario = () => {
           </div>
         </div>
       </div>
+      {loading && (
+        <div className="d-flex justify-content-center mt-2">
+          <div className="spinner-border w-[1000px]" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export default FormFuncionario;
+export default FormAnimal;

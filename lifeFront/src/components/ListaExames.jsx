@@ -11,6 +11,8 @@ const ListaExames = (props) => {
   const [selectedExam, setSelectedExam] = useState([]);
   const [exams, setExams] = useState([]);
   const [updateResult, setUpdateResult] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,6 +40,7 @@ const ListaExames = (props) => {
   const handleUpdate = async () => {
     try {
       if (!updateResult) {
+        setError("Resultado é obrigatório");
         return;
       }
 
@@ -50,9 +53,12 @@ const ListaExames = (props) => {
       );
 
       if (!selectedAnimal || !selectedExamData) {
-        console.error("Animal or exam data not found.");
+        console.error("Animal ou exame não encontrados");
         return;
       }
+
+      setLoading(true);
+      setError("");
 
       const response = await axios.put(
         `http://localhost:8000/exams-results/update/${selectedExam.id}`,
@@ -63,12 +69,16 @@ const ListaExames = (props) => {
           result: updateResult,
         }
       );
-
+      setLoading(false);
       toggleModal();
       console.log(response.data);
       window.location.href = "/exames";
     } catch (error) {
-      console.error("Erro ao atualizar resultado do exame", error);
+      setLoading(false);
+      console.error(
+        "Erro ao atualizar resultado do exame",
+        error.response.data.message
+      );
     }
   };
 
@@ -133,7 +143,7 @@ const ListaExames = (props) => {
             <tr className="list-row">
               <td className="text-center" colSpan="7">
                 {props.finishLoading === false
-                  ? "Carregando lista dos pacientes..."
+                  ? "Carregando lista dos exames..."
                   : props.searchTerm.length > 0
                   ? "Nenhum resultado encontrado"
                   : "Nenhum exame cadastrado"}
@@ -161,6 +171,7 @@ const ListaExames = (props) => {
                   id="texteAreaModal"
                   name="updateResult"
                 />
+                {error && <div className="error-message">{error}</div>}
 
                 <button
                   className="mt-2 btn btn-color btn-register"
@@ -171,7 +182,21 @@ const ListaExames = (props) => {
                 </button>
               </div>
             </div>
+            {loading && (
+              <div className="d-flex justify-content-center mt-2">
+                <div className="spinner-border w-[1000px]" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            )}
           </div>
+          {props.loading && (
+            <div className="d-flex justify-content-center mt-2">
+              <div className="spinner-border w-[1000px]" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>

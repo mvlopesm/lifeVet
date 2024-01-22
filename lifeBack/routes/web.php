@@ -14,8 +14,7 @@ Route::post('/login', [LoginController::class, 'store']);
 Route::post('/register', [LoginController::class, 'register']);
 
 
-Route::middleware('auth:sanctum')->group(function () {
-    // Rotas para ExamsResultsController
+
     Route::get('/exams-results', [ExamsResultsController::class, 'index']);
     Route::get('/exams-results/{id}', [ExamsResultsController::class, 'show']);
     Route::post('/exams-results/store', [ExamsResultsController::class, 'store']);
@@ -36,4 +35,4 @@ Route::middleware('auth:sanctum')->group(function () {
     // Rotas para ExamsController
     Route::get('/exams', [ExamsController::class, 'index']);
     Route::get('/exams/{id}', [ExamsController::class, 'show']);
-});
+

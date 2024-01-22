@@ -13,7 +13,7 @@ const ListaAnimals = (props) => {
         <thead>
           <tr className="rowTitle">
             <th scope="col">Nome</th>
-            <th scope="col">Especie</th>
+            <th scope="col">Espécie</th>
             <th scope="col">Raça</th>
             <th scope="col">Idade</th>
             <th scope="col">Tutor</th>

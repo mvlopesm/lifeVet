@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { AuthContext } from "../../Context/auth";
 import { useContext } from "react";
 
@@ -8,10 +8,20 @@ import "./Header.css";
 
 const Header = () => {
   const { setLogged } = useContext(AuthContext);
+  const location = useLocation();
+  const [currentRoute, setCurrentRoute] = useState("");
+
+  useEffect(() => {
+    setCurrentRoute(location.pathname);
+  }, [location.pathname]);
 
   const Logout = () => {
     setLogged(false);
     localStorage.removeItem("logged");
+  };
+
+  const getNavItemClass = (path) => {
+    return `nav-item ${currentRoute === path ? "nav-item-selected" : ""}`;
   };
 
   return (
@@ -24,26 +34,33 @@ const Header = () => {
 
           <div className="navbar-links">
             <div className="">
-              <Link className="nav-item active p-2" to="/">
-                Home
+              <Link className={getNavItemClass("/")} to="/">
+                HOME
               </Link>
             </div>
 
             <div>
-              <Link className="nav-item active p-2" to="/cadastrarPaciente">
-                Cadastrar
+              <Link
+                className={getNavItemClass("/cadastrarPaciente")}
+                to="/cadastrarPaciente"
+              >
+                CADASTRAR
               </Link>
             </div>
 
             <div>
-              <Link className="nav-item active p-2" to="/exames">
-                Exames
+              <Link className={getNavItemClass("/exames")} to="/exames">
+                EXAMES
               </Link>
             </div>
 
             <div>
-              <Link onClick={Logout} className="nav-item active p-2">
-                Sair
+              <Link
+                onClick={Logout}
+                className={getNavItemClass("/sair")}
+                to="/login"
+              >
+                SAIR
               </Link>
             </div>
           </div>

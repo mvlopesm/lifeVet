@@ -130,6 +130,18 @@ textarea {
   margin-top: 0px;
 }
 
+.container-full {
+  margin-top: 5px;
+}
+
+.container-solicit {
+  margin-top: -8px;
+}
+
+.container-register {
+  margin-top: -14px;
+}
+
 .row-botton {
   background-color: #fff;
 }
